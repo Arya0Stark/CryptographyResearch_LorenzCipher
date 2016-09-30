@@ -19,10 +19,13 @@ import os
 #						Added mwheel polymorphism
 #						Added wheel_assembler.py
 #						Added verbose mode
+#			  30/09/16: Added error handling and pin reading
+#						Added read from file
 #####################################################################
 
 # To Add:
 	# Read from/write to file
+	# Check filepath()
 	# Comment code
 	# Error handling (own class maybe?)
 		# Spurious characters?
@@ -30,9 +33,12 @@ import os
 ##################################################### Program Variables #####################################################
 PINSETTINGS_DIR = "pin_settings_day"
 PINSETTINGS_FILEPATH = "pinsettings.dat"
-M37_INDEX,M61_INDEX = 0,1
+M37_INDEX, M61_INDEX = 0,1
 PSI_RANGE, CHI_RANGE = 253,351
-MENU_ENCRYPT,MENU_ENCRYPT_VERBOSE,MENU_CHANGE_POS,MENU_EXIT = '1',"1-V",'2','3'
+M_ENC, M_ENC_V, M_ENC_F_FILE, M_ENC_F_FILE_V = '1',"1-V",'2',"2-V"
+M_ENC_T_FILE, M_ENC_T_FILE_V, M_ENC_TF_FILE, M_ENC_TF_FILE_V = '3','3-V','4','4-V'
+M_CHANGE_POS, M_EXIT = '5','6'
+NO_FILE_FOUND = 2222
 
 ##################################################### Program Starts Here #####################################################
 eh = errorhandler.errorhandler()
@@ -64,13 +70,57 @@ while(show_menu):
 	print()
 	
 	# Is there a better way to do this somehow involving menu_options dictionary as a switch/case?
-	if((menu_option == MENU_ENCRYPT) or (menu_option == MENU_ENCRYPT_VERBOSE)):
-		if(menu_option == MENU_ENCRYPT_VERBOSE):
-			tele.print_output(engine.encrypt(tele.read_input().upper(),True))
+	# Standard Encryption/Decryption
+	if((menu_option == M_ENC) or (menu_option == M_ENC_V)):
+		
+		if(menu_option == M_ENC_V):
+			tele.print_output(engine.encrypt(tele.read_input().upper(),True))	
 		else:
 			tele.print_output(engine.encrypt(tele.read_input().upper()))
+	
+	# Standard Encryption/Decryption From File To Console
+	elif((menu_option == M_ENC_F_FILE) or (menu_option == M_ENC_F_FILE_V)):
 		
-	elif(menu_option == MENU_CHANGE_POS):
+		file_contents = tele.read_input_file()
+		if(menu_option == M_ENC_F_FILE_V):
+
+			if(file_contents == NO_FILE_FOUND):
+				eh.no_file_chosen_err()
+			else:
+				tele.output_to_file(engine.encrypt(file_contents.upper(),True))
+		else:
+			if(file_contents == NO_FILE_FOUND):
+				eh.no_file_chosen_err()
+			else:
+				tele.print_output(engine.encrypt(file_contents.upper()))	
+	
+	# Standard Encryption/Decryption From Console To File
+	elif((menu_option == M_ENC_T_FILE) or (menu_option == M_ENC_T_FILE_V)):
+	
+		if(menu_option == M_ENC_T_FILE_V):
+			tele.output_to_file(engine.encrypt(tele.read_input().upper(),True))
+		else:
+			tele.output_to_file(engine.encrypt(tele.read_input().upper()))
+			
+	# Standard Encryption/Decryption From File To/From File
+	elif((menu_option == M_ENC_TF_FILE) or (menu_option == M_ENC_TF_FILE_V)):
+		
+		file_contents = tele.read_input_file()
+		if(menu_option == M_ENC_TF_FILE_V):
+			
+			if(file_contents == NO_FILE_FOUND):
+				eh.no_file_chosen_err()
+			else:
+				tele.output_to_file(engine.encrypt(file_contents.upper()),True)
+
+		else:
+			if(file_contents == NO_FILE_FOUND):
+				eh.no_file_chosen_err()
+			else:
+				tele.output_to_file(engine.encrypt(file_contents.upper()))
+
+	# Change Pin Positions on Wheels
+	elif(menu_option == M_CHANGE_POS):
 		# This needs to be tidied, potential default mode if only changing a few?
 		print("Changing Psi Block Starting Positions:")
 		psi_block.change_block_position_settings()
@@ -79,12 +129,14 @@ while(show_menu):
 		print("\nChanging M Wheels Starting Position:")
 		m_wheels[M37_INDEX].change_start_pos()
 		m_wheels[M61_INDEX].change_start_pos()
-		
-	elif(menu_option == MENU_EXIT or menu_option == 'EXIT'):
+	
+	# Exit Program	
+	elif(menu_option == M_EXIT or menu_option == 'EXIT'):		
 		show_menu = False # Not sure if both are needed?
 		menu.menu_exit()
 
-	else:
+	# Non-Menu Item Entered
+	else:		
 		eh.menu_non_option_err()
 		
 ##################################################### End #####################################################

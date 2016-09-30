@@ -25,3 +25,6 @@ class errorhandler():
 	
 	def menu_non_option_err(self):
 		print("Not an option in the menu, try again.")
+	
+	def no_file_chosen_err(self):
+		print("No file chosen!")

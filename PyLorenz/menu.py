@@ -12,9 +12,12 @@ class menu():
 	STAR,SPACE,STAR_SPACE,COLON_SPACE,D_NEWLINE,NEWLINE = "*"," ","* "," : ","\n\n","\n"
 	BORDER_HOR = STAR * MENU_WIDTH
 	MENU_OPTIONS = {
-							'1':"Encrypt/Decrypt (-v for Verbose)",
-							'2':"Set Wheel/Pin Positions (Default = 0)",
-							'3':"Exit (Alternatively, type 'exit')"
+							'1':"Encrypt/Decrypt Input (-v for Verbose)",
+							'2':"Encrypt/Decrypt From File",
+							'3':"Encrypt/Decrypt To File",
+							'4':"Encrypt/Decrypt From/To File",
+							'5':"Set Wheel/Pin Positions (Default = 0)",
+							'6':"Exit (Alternatively, type 'exit')"
 						}
 	MENU_OPTIONS = collections.OrderedDict(sorted(MENU_OPTIONS.items()))
 	EXIT_MESSAGE = "Exiting Lorenz Simulator\n\n"

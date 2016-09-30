@@ -77,9 +77,9 @@ class encryption_engine():
 		
 		for char in to_encrypt:
 			key = self.create_key()
-			print()
 			charcode = self.encryption_dict[char]
 			if(verbose):
+				print()
 				print("CHAR      : " + char)
 				print("CHAR CODE :", charcode)
 				print("KEY       :", self.listReducer(key))
