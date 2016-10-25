@@ -22,10 +22,11 @@ Simply run main.py.
 Hopefully the program menu is concise enough, however the program allows you to;
 * Encrypt/Decrypt using the Lorenz Cipher, with the option to see the verbose version.
 * Change the starting positions of any of the wheels.
+* Read in different pin settings, depending on the day.
+* Read from, and write to file.
 
 ## Future Additions:
-* Reading in different pin settings, depending on the day.
-* Read from, and write to file.
+Feel free to suggest some!
 
 ## License
 
