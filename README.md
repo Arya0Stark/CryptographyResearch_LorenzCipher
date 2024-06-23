@@ -28,5 +28,5 @@ Hopefully the program menu is concise enough, however the program allows you to;
 ## Future Additions:
 Feel free to suggest some!
 
-## License
+
 
